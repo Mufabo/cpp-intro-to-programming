@@ -1,0 +1,4 @@
+Semicolons in the morning,
+braces late at night,
+the compiler keeps on warning
+until the code is right.

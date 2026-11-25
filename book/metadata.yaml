@@ -1,0 +1,14 @@
+---
+title: "Introduction to Programming with Modern C++"
+author: "Adapted from the University of Helsinki MOOC.fi Java Programming course"
+lang: en-US
+rights: >-
+  Licensed under Creative Commons BY-NC-SA 4.0. Adapted from "Java Programming"
+  by the Agile Education Research Group, University of Helsinki (MOOC.fi),
+  which is licensed under CC BY-NC-SA 4.0.
+description: >-
+  A beginner's textbook that teaches programming from scratch using C++23:
+  variables, conditionals, loops, functions, lists, objects, testing,
+  algorithms, maps, inheritance, ranges, templates, files and graphics.
+subject: Programming; C++; Computer Science Education
+---

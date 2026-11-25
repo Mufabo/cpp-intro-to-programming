@@ -1,0 +1,24 @@
+Introduction to Programming with Modern C++
+
+This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike
+4.0 International License (CC BY-NC-SA 4.0).
+
+  Full legal code: https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
+  Summary:         https://creativecommons.org/licenses/by-nc-sa/4.0/
+
+You are free to share and adapt this material for non-commercial purposes, provided
+that you give appropriate credit, indicate if changes were made, and distribute your
+contributions under the same license.
+
+Attribution
+-----------
+This work is an adaptation of "Java Programming" (https://java-programming.mooc.fi/)
+by the Agile Education Research Group, University of Helsinki (MOOC.fi), licensed
+under CC BY-NC-SA 4.0. The course text has been rewritten for C++23 and the exercises
+have been translated from Java to C++.
+
+Third-party material in the exercise folders:
+  - exercises/part10/10_13_LiteracyComparison/literacy.csv: UNESCO Institute for Statistics data
+  - exercises/part14/14_05_CyclingStatistics/cycling-monthly.csv: derived from City of Helsinki open data
+  - exercises/part14/14_07_Collage/monalisa.png: public domain
+  - exercises/part14/14_08_Hurray/Applause-Yannick_Lemieux.wav: Yannick Lemieux, CC BY 3.0

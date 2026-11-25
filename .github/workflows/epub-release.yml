@@ -1,0 +1,75 @@
+name: Build book and exercises
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release tag to create (for example v1.0.0). Leave empty to only build."
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+jobs:
+  exercises:
+    name: Compile exercise templates
+    runs-on: ubuntu-24.04
+    # GCC 15 is the first GCC whose standard library can print whole containers
+    # with std::println("{}", vector), which the book uses.
+    container: gcc:15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install CMake and raylib's system dependencies
+        run: |
+          apt-get update
+          apt-get install -y --no-install-recommends cmake ninja-build \
+            libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libgl1-mesa-dev
+
+      - name: Configure (all exercises, C++23)
+        run: cmake -S exercises -B build -G Ninja -DCMAKE_BUILD_TYPE=Debug -DBUILD_GRAPHICAL_EXERCISES=ON
+
+      - name: Build
+        run: cmake --build build
+
+      - name: Run unit tests
+        run: ctest --test-dir build --output-on-failure
+
+  epub:
+    name: Build EPUB
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # git describe needs the tags
+
+      - name: Install pandoc
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pandoc
+
+      - name: Build EPUB
+        env:
+          VERSION: ${{ inputs.version || github.ref_name }}
+        run: bash scripts/build-epub.sh
+
+      - name: Upload EPUB as workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: cpp-intro-to-programming-epub
+          path: dist/cpp-intro-to-programming.epub
+          if-no-files-found: error
+
+      - name: Publish GitHub release
+        if: startsWith(github.ref, 'refs/tags/v') || inputs.version != ''
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ inputs.version || github.ref_name }}
+          name: Introduction to Programming with Modern C++ ${{ inputs.version || github.ref_name }}
+          files: dist/cpp-intro-to-programming.epub
+          generate_release_notes: true
