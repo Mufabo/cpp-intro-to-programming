@@ -168,8 +168,6 @@ Print the average of the negative numbers or the positive numbers? (n/p)
 Average of the positive numbers: 1.5
 ```
 
-### More pipelines
-
 ### Exercise 10.3: Positive Numbers
 
 *Template: `exercises/part10/10_03_PositiveNumbers`*
@@ -555,7 +553,7 @@ The form is incorrect.
 An **enumeration** is a type with a fixed set of named values:
 
 ```cpp
-enum class Suit { Diamond, Spade, Club, Heart };
+enum class Suit { Club, Diamond, Heart, Spade };
 
 Suit suit = Suit::Heart;
 if (suit == Suit::Heart) {
@@ -563,17 +561,17 @@ if (suit == Suit::Heart) {
 }
 ```
 
-`enum class` (a *scoped enumeration*) keeps its values inside its own name, so they are written `Suit::Heart`. Its values do not convert silently to integers, which prevents accidental mix-ups. When you need the number, convert explicitly: `static_cast<int>(Suit::Spade)` is 1 (values count from 0 in declaration order). You can also choose the numbers: `enum class Color { Red = 1, Green = 2 };`.
+`enum class` (a *scoped enumeration*) keeps its values inside its own name, so they are written `Suit::Heart`. Its values do not convert silently to integers, which prevents accidental mix-ups. When you need the number, convert explicitly: `static_cast<int>(Suit::Heart)` is 2 (values count from 0 in declaration order). You can also choose the numbers: `enum class Color { Red = 1, Green = 2 };`.
 
 A `switch` statement is a natural companion to enums:
 
 ```cpp
 std::string toString(Suit suit) {
     switch (suit) {
-        case Suit::Diamond: return "DIAMOND";
-        case Suit::Spade:   return "SPADE";
         case Suit::Club:    return "CLUB";
+        case Suit::Diamond: return "DIAMOND";
         case Suit::Heart:   return "HEART";
+        case Suit::Spade:   return "SPADE";
     }
     return "?";
 }
@@ -670,13 +668,13 @@ Since Chapter 4 we have printed objects with `std::println("{}", object.toString
 
 template <>
 struct std::formatter<Card> : std::formatter<std::string> {
-    auto format(const Card& card, std::format_context& context) const {
+    auto format(const Card& card, auto& context) const {
         return std::formatter<std::string>::format(card.toString(), context);
     }
 };
 ```
 
-After this, `std::println("{}", card)`, `std::format("{}", card)` and even `std::println("{}", vectorOfCards)` all work. As with `std::hash` in Chapter 8, treat this as a recipe for now: replace `Card` with your class name and `card.toString()` with how your object becomes text.
+After this, `std::println("{}", card)`, `std::format("{}", card)` and even `std::println("{}", vectorOfCards)` all work. (A vector of cards prints like `["DIAMOND 2", "SPADE A"]`: the elements are formatted as strings, so they get quotes.) The `auto&` parameter matters: it lets the formatter work with every kind of format context, which is what printing containers requires. As with `std::hash` in Chapter 8, treat this as a recipe for now: replace `Card` with your class name and `card.toString()` with how your object becomes text.
 
 ### Exercise 10.17: Sort Them Cards! (6 parts)
 

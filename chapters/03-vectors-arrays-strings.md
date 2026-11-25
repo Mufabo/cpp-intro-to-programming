@@ -207,8 +207,6 @@ The template reads strings until an empty line. Make it print how many values we
 In total: 4
 ```
 
-### Iterating over a vector, continued
-
 ### Exercise 3.5: Last in List
 
 *Template: `exercises/part03/03_05_LastInList`*
@@ -873,8 +871,6 @@ As above, but print the last word of each line.
 > one two three four
 four
 ```
-
-### Using diverse text
 
 ### Exercise 3.30: Age of the Oldest
 

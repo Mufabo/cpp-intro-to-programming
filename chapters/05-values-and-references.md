@@ -264,7 +264,7 @@ Plaster (1 kg) can be found from the home improvement section
 Tyre (5 kg) can be found from the shelf
 ```
 
-> **A classic C++ trap.** What does `Product p("Hammer", "toolbox");` call — the `(string, string)` constructor, or `(string, int)`? It calls `(string, string)`, as you would hope. But be careful with literals like `Product p("Hammer", 0);` — `0` can convert to many types. When in doubt, test.
+> **A classic C++ trap.** `Product p("Hammer", "toolbox");` calls the `(string, string)` constructor, as you would hope. But suppose the class also had a constructor `Product(const std::string& name, bool fragile)`. Then the same line would call the **`bool`** version! A string literal converts to `bool` (any non-null pointer is `true`) through a built-in conversion, and the compiler prefers built-in conversions over converting to `std::string`. Be careful when overloads take `bool`, and when in doubt, test.
 
 ### Function overloading
 
@@ -435,6 +435,50 @@ Compilers warn about this case. The fix is simple: return the object itself (`Pe
 
 ## 5.4 Objects as parameters, members and return values
 
+### An object as a member variable
+
+Objects can contain other objects. A `Clock` contained `ClockHand`s; similarly a person may have a pet:
+
+```cpp
+class Pet {
+public:
+    Pet(const std::string& name, const std::string& breed) : name(name), breed(breed) {}
+    std::string getName() const { return name; }
+    std::string getBreed() const { return breed; }
+
+private:
+    std::string name;
+    std::string breed;
+};
+
+class Person {
+public:
+    Person(const std::string& name, const Pet& pet) : name(name), pet(pet) {}
+
+private:
+    std::string name;
+    Pet pet;   // the person's own Pet object
+};
+```
+
+Because objects are values, a `Person` *contains* its own copy of the `Pet`. That is exactly right when the contained object belongs to its owner, as a clock's hands belong to the clock.
+
+### Exercise 5.8: Biggest Pet Shop
+
+*Template: `exercises/part05/05_08_BiggestPetShop`*
+
+The template contains the classes `Person` and `Pet`. Change `Person::toString` so that it also tells about the pet:
+
+```cpp
+Pet lucy("Lucy", "golden retriever");
+Person leo("Leo", lucy);
+std::println("{}", leo.toString());
+```
+
+```
+Leo, has a friend called Lucy (golden retriever)
+```
+
 ### An object as a function parameter
 
 Objects are passed to functions like any other value, by copy or by reference. A function that should modify the caller's object must take a reference:
@@ -542,50 +586,6 @@ money: 1009.3, number of sold affordable meals: 2, number of sold hearty meals: 
 **Part 3: Card payments.** Add *overloads* that take a card: `bool eatAffordably(PaymentCard& card)` and `bool eatHeartily(PaymentCard& card)`. If the card has enough money, take the price from it, count the sale and return `true`; otherwise return `false`. Card payments do not change the amount of cash.
 
 **Part 4: Topping up the card.** Add `void addMoneyToCard(PaymentCard& card, double sum)`, which adds `sum` to the card and to the terminal's cash. Negative sums are ignored.
-
-### An object as a member variable
-
-Objects can contain other objects. A `Clock` contained `ClockHand`s; similarly a person may have a pet:
-
-```cpp
-class Pet {
-public:
-    Pet(const std::string& name, const std::string& breed) : name(name), breed(breed) {}
-    std::string getName() const { return name; }
-    std::string getBreed() const { return breed; }
-
-private:
-    std::string name;
-    std::string breed;
-};
-
-class Person {
-public:
-    Person(const std::string& name, const Pet& pet) : name(name), pet(pet) {}
-
-private:
-    std::string name;
-    Pet pet;   // the person's own Pet object
-};
-```
-
-Because objects are values, a `Person` *contains* its own copy of the `Pet`. That is exactly right when the contained object belongs to its owner, as a clock's hands belong to the clock.
-
-### Exercise 5.8: Biggest Pet Shop
-
-*Template: `exercises/part05/05_08_BiggestPetShop`*
-
-The template contains the classes `Person` and `Pet`. Change `Person::toString` so that it also tells about the pet:
-
-```cpp
-Pet lucy("Lucy", "golden retriever");
-Person leo("Leo", lucy);
-std::println("{}", leo.toString());
-```
-
-```
-Leo, has a friend called Lucy (golden retriever)
-```
 
 ### An object of the same type as a parameter
 

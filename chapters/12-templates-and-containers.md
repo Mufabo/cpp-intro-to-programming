@@ -273,7 +273,7 @@ void remove(const T& value) {
 }
 ```
 
-Both are *O(n)* operations. That is exactly why `std::vector` has no `contains` member function: searching a vector is always linear, and the standard library makes that cost visible by putting it in a separate algorithm.
+Both are *O(n)* operations: there is no way to search an unsorted list faster than looking at the elements one by one. (`std::vector` offers this search through the separate algorithms `std::ranges::find` and `std::ranges::contains`.)
 
 > **Copying our List.** Because `List` contains a `std::unique_ptr`, which cannot be copied, `List` cannot be copied either — the compiler stops you. Making it copyable would require writing a *copy constructor* and *copy assignment operator* that allocate a new array and copy the elements. This is one of the details that `std::vector` handles for you.
 
@@ -389,7 +389,7 @@ std::println("A random height: {:.1f}", heights(engine));
 
 ### Pseudo-random numbers and seeds
 
-The numbers from an engine are not truly random: they are computed by a deterministic formula from a starting value, the **seed**. The same seed always produces the same sequence. `std::random_device` asks the operating system for a genuinely unpredictable seed.
+The numbers from an engine are not truly random: they are computed by a deterministic formula from a starting value, the **seed**. The same seed always produces the same sequence. `std::random_device` asks the system for an unpredictable seed. (On all mainstream platforms it is backed by the operating system's random source, although the C++ standard does not strictly require that.)
 
 Determinism is often useful: give the engine a fixed seed — `std::mt19937 engine(42);` — and a simulation or a test produces the same "random" results every run, which makes bugs reproducible.
 

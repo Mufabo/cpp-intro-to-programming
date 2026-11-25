@@ -209,8 +209,6 @@ b
 
 Note the singular `element` when there is exactly one. Join lines with the newline character `'\n'`.
 
-### Calculating a sum from objects in a vector
-
 ### Exercise 6.5: Santa's Workshop (2 parts)
 
 *Template: `exercises/part06/06_05_SantasWorkshop`*
@@ -476,13 +474,14 @@ New features slot in naturally. Suppose the program should also count the palind
 
 ```cpp
 #include <algorithm>
+#include <ranges>
 
 bool isPalindrome(const std::string& word) {
     return std::ranges::equal(word, word | std::views::reverse);
 }
 ```
 
-`word | std::views::reverse` (from `<ranges>`) is a reversed *view* of the string; `std::ranges::equal` compares the two sequences element by element. Views and the `|` notation return in Chapter 10.
+`word | std::views::reverse` is a reversed *view* of the string; `std::ranges::equal` compares the two sequences element by element. Views and the `|` notation return in Chapter 10.
 
 ### Programming tips
 

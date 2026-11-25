@@ -198,7 +198,7 @@ std::println("{}", numbers);
 [4, 3, 5, 2, 8]
 ```
 
-**Part 5: Sorting.** Implement `void sort(std::span<int> numbers)` as a selection sort using the functions above. Print the vector after each step to watch the algorithm work:
+**Part 5: Sorting.** Implement `void sort(std::span<int> numbers)` as a selection sort using the functions above. Print the numbers once before sorting and then after each step to watch the algorithm work:
 
 ```
 [8, 3, 7, 9, 1, 2, 4]

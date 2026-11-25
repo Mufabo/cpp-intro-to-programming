@@ -281,8 +281,6 @@ Hi
 Hi
 ```
 
-### Input as part of output
-
 ### Exercise 1.8: Greeting
 
 *Template: `exercises/part01/01_08_Greeting`*
@@ -483,8 +481,6 @@ Give a number:
 You gave the number 42
 ```
 
-### Reading doubles
-
 ### Exercise 1.13: Double Input
 
 *Template: `exercises/part01/01_13_DoubleInput`*
@@ -522,8 +518,6 @@ Write something:
 > true
 True or false? true
 ```
-
-### Summary
 
 ### Exercise 1.15: Different Types of Input
 
@@ -684,7 +678,7 @@ double d = first / second;             // 1 — the integer division happens fir
 
 `static_cast<double>(first)` converts the value of `first` to a `double` for this calculation. Note the last line: the division `first / second` is between two `int`s, so it produces `1`, which is only *then* converted to `1.0`.
 
-> **How doubles print.** `std::println` prints a `double` in the shortest form that represents it exactly, so `5.0` prints as `5` and `4.5` as `4.5`. If you want a fixed number of decimals, use a format specification: `std::println("{:.2f}", 5.0)` prints `5.00`.
+> **How doubles print.** `std::println` prints a `double` in the shortest form that reads back as the same value, so `5.0` prints as `5` and `4.5` as `4.5`. (Most decimal fractions, such as `0.1`, cannot be stored exactly in a `double`; printing picks the shortest text that still identifies the stored value.) If you want a fixed number of decimals, use a format specification: `std::println("{:.2f}", 5.0)` prints `5.00`.
 
 ### Exercise 1.21: Average of Two Numbers
 

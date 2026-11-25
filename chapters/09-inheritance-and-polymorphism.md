@@ -91,9 +91,14 @@ Construction always happens from the base towards the derived class: first the `
 A derived class can **override** a member function — provide its own version — and still call the base version by qualifying it with the base class name:
 
 ```cpp
-std::string Student::toString() const {
-    return Person::toString() + "\n  Study credits " + std::to_string(credits);
-}
+class Student : public Person {
+public:
+    // ...
+    std::string toString() const {
+        return Person::toString() + "\n  Study credits " + std::to_string(credits);
+    }
+    // ...
+};
 ```
 
 ### Exercise 9.2: Person and Subclasses (5 parts)
@@ -701,7 +706,7 @@ x: 19; y: 107
 
 *Template: `exercises/part09/09_12_Animals`*
 
-**Part 1: Animal.** Create an abstract class `Animal` with a name given to the constructor, `std::string getName() const`, and the member functions `void eat() const` and `void sleep() const`, which print `(name) eats` and `(name) sleeps`. Make it abstract by giving it a protected constructor, or a pure virtual function.
+**Part 1: Animal.** Create a base class `Animal` with a name given to the constructor, `std::string getName() const`, and the member functions `void eat() const` and `void sleep() const`, which print `(name) eats` and `(name) sleeps`. Nobody should create a plain `Animal`. Make its constructor `protected`, so that only derived classes can call it. (Strictly speaking, that does not make `Animal` *abstract* — only a pure virtual function does — but it has the same practical effect here.) Give it a virtual destructor, too.
 
 **Part 2: Dog.** Create `Dog`, deriving from `Animal`, with a constructor taking a name, a default constructor that names the dog `Dog`, and `void bark() const`, which prints `(name) barks`.
 
@@ -721,7 +726,7 @@ Fido barks
 
 **Part 3: Cat.** Create `Cat` similarly, with the default name `Cat` and `void purr() const` printing `(name) purrs`.
 
-**Part 4: NoiseCapable.** Create the interface `NoiseCapable` with `virtual void makeNoise() const = 0;`. Make `Dog` and `Cat` implement it: a dog's noise is barking and a cat's is purring.
+**Part 4: NoiseCapable.** Create the interface `NoiseCapable` with `virtual void makeNoise() const = 0;` and — like every interface — a virtual destructor, `virtual ~NoiseCapable() = default;`. Without it, the example below would destroy a `Dog` through a `std::unique_ptr<NoiseCapable>`, which is undefined behaviour. Make `Dog` and `Cat` implement it: a dog's noise is barking and a cat's is purring.
 
 ```cpp
 std::unique_ptr<NoiseCapable> dog = std::make_unique<Dog>();

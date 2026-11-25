@@ -296,8 +296,6 @@ for example
 more precisely
 ```
 
-### Going through a map's values
-
 ### Exercise 8.9: Print Me Another Hash Map
 
 *Template: `exercises/part08/08_09_PrintMeAnotherHashmap`*
@@ -373,11 +371,11 @@ Chapter 5 showed how to define `operator==` for a class, so that `==`, `std::ran
 
 ```cpp
 // equal when all members are equal
-bool operator==(const SimpleDate& other) const = default;
+bool operator==(const Song& other) const = default;
 
 // equal by a custom rule
 bool operator==(const Book& other) const {
-    return name == other.name && published == other.published;
+    return name == other.name && publicationYear == other.publicationYear;
 }
 ```
 
@@ -395,34 +393,35 @@ For this to work, two things are required of a key type:
 ```cpp
 #include <functional>
 
-class SimpleDate {
+class GridPoint {
 public:
-    // ...
-    bool operator==(const SimpleDate& other) const = default;
+    GridPoint(int x, int y) : x(x), y(y) {}
+
+    bool operator==(const GridPoint& other) const = default;
 
     std::size_t hashCode() const {
-        return std::hash<int>{}(year) * 31 * 31
-             + std::hash<int>{}(month) * 31
-             + std::hash<int>{}(day);
+        return std::hash<int>{}(x) * 31 + std::hash<int>{}(y);
     }
 
 private:
-    int day;
-    int month;
-    int year;
+    int x;
+    int y;
 };
 
 template <>
-struct std::hash<SimpleDate> {
-    std::size_t operator()(const SimpleDate& date) const {
-        return date.hashCode();
+struct std::hash<GridPoint> {
+    std::size_t operator()(const GridPoint& point) const {
+        return point.hashCode();
     }
 };
+
+std::unordered_map<GridPoint, std::string> map;
+map[GridPoint(2, 3)] = "treasure";
 ```
 
-The `template <> struct std::hash<SimpleDate>` block tells the standard library "this is how to hash a `SimpleDate`". It must appear after the class and before any `std::unordered_map<SimpleDate, ...>` is used. You do not need to understand templates yet (they come in Chapter 12); treat this as a recipe.
+The `template <> struct std::hash<GridPoint>` block tells the standard library "this is how to hash a `GridPoint`". It must appear after the class and before any `std::unordered_map<GridPoint, ...>` is used. You do not need to understand templates yet (they come in Chapter 12); treat this as a recipe.
 
-What makes a good hash function? Equal objects **must** have equal hashes. Unequal objects *should* usually have different hashes; if many keys share a hash, they pile up in the same bucket and lookups slow down. Combining the members with multiplication by a prime such as 31, as above, is a simple and reasonable technique.
+What makes a good hash function? Equal objects **must** have equal hashes. Unequal objects *should* usually have different hashes; if many keys share a hash, they pile up in the same bucket and lookups slow down. Combining the members with multiplication by a prime such as 31, as above, is a simple and reasonable technique — but think about the ranges of your values: if `x * 31 + y` can produce the same number for two different points, those points collide.
 
 > **Do you even need a hash map?** If a key type can be ordered (it has `<`, or C++20's `<=>`), `std::map` works with it without any hash function. For small programs, that is often the simpler choice.
 
@@ -455,7 +454,7 @@ European licence plates have a two-letter country code and a national number. Th
 class LicensePlate {
 public:
     LicensePlate(const std::string& country, const std::string& liNumber)
-        : country(country), liNumber(liNumber) {
+        : liNumber(liNumber), country(country) {
     }
 
     std::string toString() const {

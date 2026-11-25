@@ -194,7 +194,7 @@ Grace, age 0 years
 
 *Template: `exercises/part04/04_05_Whistle`*
 
-Create a class `Whistle` with a private member `std::string sound`, a constructor `Whistle(const std::string& whistleSound)`, and a member function `void sound() const` that prints the sound.
+Create a class `Whistle` with a private member variable `std::string soundText`, a constructor `Whistle(const std::string& whistleSound)`, and a member function `void sound() const` that prints the sound.
 
 ```cpp
 Whistle duckWhistle("Kvaak");
@@ -210,7 +210,7 @@ Peef
 Kvaak
 ```
 
-(Can a member variable and a member function both be called `sound`? No — they would clash. Call the variable something else, such as `soundText`.)
+(Why not call the member variable `sound` too? Because a member variable and a member function of the same class cannot share a name — they would clash.)
 
 ### Exercise 4.6: Door
 
@@ -722,7 +722,7 @@ for (const Person& person : persons) {
 
 *Template: `exercises/part04/04_17_Items`*
 
-The template contains a class `Item` (do not change it), which remembers its name and the time it was created. Write a program that reads item names until an empty line, creates an `Item` for each, and stores them in a vector. Then print all the items using `toString`.
+The template contains a class `Item` (do not change it), which remembers its name and the time it was created. (The time is shown in UTC, the time zone of `std::chrono::system_clock`, so it may differ from your local clock.) Write a program that reads item names until an empty line, creates an `Item` for each, and stores them in a vector. Then print all the items using `toString`.
 
 ```
 Name:
@@ -734,8 +734,6 @@ Name:
 Hammer (created at: 06.07.2026 12:34:56)
 Collar (created at: 06.07.2026 12:34:57)
 ```
-
-### Multiple constructor parameters
 
 ### Exercise 4.18: Personal Information
 
@@ -894,7 +892,7 @@ Read strings until `end`. Treat every other input as an integer and print its cu
 
 Files live in a **file system**, organised into folders (directories). A file is identified by its **path**: `/home/ada/notes.txt` on Linux or `C:\Users\ada\notes.txt` on Windows. A *relative* path like `notes.txt` or `data/notes.txt` is interpreted relative to the program's **working directory** — the folder in which the program was started.
 
-That is why, as explained in the preface, the exercise programs that use files should be run from their own build folder: the build copies the data files there.
+That is why, as explained in the preface, the exercise programs that use files should be run from their own build folder: the build copies the data files there. The copying happens when CMake configures the project, so after changing a data file, run CMake's configure step again.
 
 ### Exercise 4.23: Creating a New File
 

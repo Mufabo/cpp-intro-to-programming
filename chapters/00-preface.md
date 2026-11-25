@@ -55,7 +55,7 @@ cmake -S exercises -B build
 cmake --build build
 ```
 
-Every exercise becomes a program named after its folder, in a folder of its own. On Linux and macOS you run the first exercise with `./build/part01/01_01_Sandbox/01_01_Sandbox` (on Windows the file ends in `.exe`). Exercises that read data files from Chapter 4 onwards find their files in that same folder, so run those programs from inside it. Editors with CMake support let you pick an exercise from a list and run it with a single click — this is the most comfortable way to work.
+Every exercise becomes a program named after its folder, in a folder of its own. On Linux and macOS you run the first exercise with `./build/part01/01_01_Sandbox/01_01_Sandbox` (on Windows the file ends in `.exe`). Exercises that read data files from Chapter 4 onwards find their files in that same folder, so run those programs from inside it. The data files are copied when CMake *configures* the project, not on every build: if you change or add a data file, run `cmake -S exercises -B build` again. Editors with CMake support let you pick an exercise from a list and run it with a single click — this is the most comfortable way to work.
 
 If you would rather not use CMake for the small exercises of the first chapters, you can compile a single file directly:
 
@@ -74,7 +74,7 @@ Program code looks like this:
 std::println("Hello world!");
 ```
 
-Example runs of a program look like this. A line starting with `> ` is something the *user* typed (the `> ` itself is not part of the input):
+Example runs of a program look like this. A line starting with `> ` is something the *user* typed (the `> ` itself is not part of the input). Some programs print their prompt and read the answer on the same line, like `Command: add`; in those examples the text after the prompt is what the user typed:
 
 ```
 What's your name?

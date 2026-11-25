@@ -47,7 +47,7 @@ private:
 // Lets std::println("{}", card) print a card.
 template <>
 struct std::formatter<Card> : std::formatter<std::string> {
-    auto format(const Card& card, std::format_context& context) const {
+    auto format(const Card& card, auto& context) const {
         return std::formatter<std::string>::format(card.toString(), context);
     }
 };

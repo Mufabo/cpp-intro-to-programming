@@ -471,7 +471,9 @@ A useful pattern for reading numbers robustly:
 int readNumber(std::istream& input) {
     std::string line;
     while (true) {
-        std::getline(input, line);
+        if (!std::getline(input, line)) {
+            throw std::runtime_error("No more input");   // otherwise we would loop forever
+        }
         try {
             return std::stoi(line);
         } catch (const std::exception&) {
@@ -481,7 +483,7 @@ int readNumber(std::istream& input) {
 }
 ```
 
-(`std::stoi` throws `std::invalid_argument` for text and `std::out_of_range` for numbers too large for an `int`; catching `std::exception` handles both.)
+(`std::stoi` throws `std::invalid_argument` for text and `std::out_of_range` for numbers too large for an `int`; catching `std::exception` handles both. The check on `std::getline` matters: when the input ends — the user presses `Ctrl+D`, or a test runs out of lines — `getline` fails, and without the check the loop would retry forever.)
 
 ### Exceptions and resources
 
@@ -603,6 +605,8 @@ Chapter 4 showed how to read files. Writing is just as easy, with `std::ofstream
 
 ```cpp
 #include <fstream>
+#include <ostream>   // std::println for streams
+#include <print>
 
 std::ofstream file("output.txt");
 if (!file) {
@@ -613,7 +617,7 @@ std::println(file, "First line");
 std::println(file, "The answer is {}", 42);
 ```
 
-`std::println` and `std::print` accept a stream as their first argument and write to it instead of the screen. (Older code writes with `file << "First line\n";`, which works too.) The file is closed and its contents flushed to disk when `file` is destroyed.
+`std::println` and `std::print` accept a stream as their first argument and write to it instead of the screen. These stream versions are declared in the header `<ostream>`, so include it explicitly; `<fstream>` alone is not guaranteed to provide them. (Older code writes with `file << "First line\n";`, which works too.) The file is closed and its contents flushed to disk when `file` is destroyed.
 
 Opening a file for writing **replaces** its contents. To add to the end instead, open it in append mode: `std::ofstream file("log.txt", std::ios::app);`.
 
