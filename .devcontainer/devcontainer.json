@@ -1,0 +1,25 @@
+{
+  "name": "Modern C++ intro book",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "remoteUser": "dev",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode.cpptools",
+        "ms-vscode.cmake-tools",
+        "yzhang.markdown-all-in-one"
+      ],
+      "settings": {
+        "cmake.sourceDirectory": "${workspaceFolder}/exercises",
+        "cmake.buildDirectory": "${workspaceFolder}/build",
+        "cmake.generator": "Ninja",
+        "cmake.configureSettings": {
+          "BUILD_GRAPHICAL_EXERCISES": "ON"
+        },
+        "C_Cpp.default.cppStandard": "c++23"
+      }
+    }
+  }
+}

@@ -40,6 +40,24 @@ jobs:
       - name: Run unit tests
         run: ctest --test-dir build --output-on-failure
 
+  devcontainer:
+    name: Dev container
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build the dev container image
+        run: docker build -t cpp-intro-dev .devcontainer
+
+      - name: Build exercises and EPUB inside the dev container
+        run: |
+          docker run --rm --user root -v "$PWD":/workspace -w /workspace cpp-intro-dev bash -c '
+            git config --global --add safe.directory /workspace &&
+            cmake -S exercises -B /tmp/build -G Ninja -DBUILD_GRAPHICAL_EXERCISES=ON &&
+            cmake --build /tmp/build &&
+            ctest --test-dir /tmp/build --output-on-failure &&
+            bash scripts/build-epub.sh'
+
   epub:
     name: Build EPUB
     runs-on: ubuntu-24.04

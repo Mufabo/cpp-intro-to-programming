@@ -46,6 +46,19 @@ On Linux this needs the X11/OpenGL development packages (`libx11-dev libxrandr-d
 
 `scripts/check-exercises.sh` and `scripts/check-graphical.sh` compile the templates quickly without CMake.
 
+## Dev container
+
+[`.devcontainer/`](.devcontainer) contains a development container with everything preinstalled: GCC 15, CMake, Ninja, GDB, clang-format, raylib's build dependencies and pandoc 3. In VS Code, install the *Dev Containers* extension and choose **Reopen in Container**; CMake Tools is preconfigured for the `exercises/` folder with the graphical exercises enabled. GitHub Codespaces uses the same configuration.
+
+Without VS Code:
+
+```
+docker build -t cpp-intro-dev .devcontainer
+docker run --rm -it -v "$PWD":/workspace cpp-intro-dev
+```
+
+The graphical exercises compile in the container, but showing their windows needs a display: on Linux, pass your X server in (`-e DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix`). Otherwise run the graphical programs on the host.
+
 ## Building the book
 
 The book is plain Markdown. To build the EPUB locally, install [pandoc](https://pandoc.org/) and run:
