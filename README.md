@@ -45,14 +45,17 @@ ctest --test-dir build
 Every exercise becomes its own program in `build/partNN/<exercise>/`. Data files are copied into that folder too. Programs open them relative to the folder you start them from, so run exercises that read files from their own folder:
 
 ```
-cd build/part14/14_07_Collage
-./14_07_Collage
+cd build/part04/04_24_PrintingAFile
+./04_24_PrintingAFile
 ```
 
-The graphical exercises of chapters 13–14 (raylib, raygui, SQLite — downloaded automatically) are built only on request:
+The graphical exercises of chapters 13–14 (raylib, raygui, SQLite — downloaded automatically) are built only on request. From the repository root:
 
 ```
 cmake -S exercises -B build -DBUILD_GRAPHICAL_EXERCISES=ON
+cmake --build build
+cd build/part14/14_07_Collage
+./14_07_Collage
 ```
 
 On Linux this needs the X11/OpenGL development packages (`libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libgl1-mesa-dev` on Ubuntu). Exercises with unit tests use Catch2 (see above); run them with `ctest --test-dir build`.
