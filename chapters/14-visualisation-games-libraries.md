@@ -224,6 +224,8 @@ UnloadTexture(texture);
 UnloadImage(image);
 ```
 
+`LoadImage` looks for the file relative to the *working directory*, the folder the program was started from, not the folder the program file is in. CMake copies `monalisa.png` next to the exercise program, so start it from there (`cd build/part14/14_07_Collage` and then `./14_07_Collage`). If the file cannot be found, `LoadImage` returns an image whose `data` is `nullptr`; check for that before using the image.
+
 Because raylib is a C library, its resources must be released by hand with the `Unload…` functions, and the window must still be open when they are released. (A C++ programmer would wrap them in small RAII classes whose destructors call `Unload…`, so that releasing can never be forgotten. Try it!)
 
 To work with individual pixels:

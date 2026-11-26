@@ -820,7 +820,12 @@ The `\n` characters are line breaks. The program runs as if a user had typed the
 
 **Unit testing** means writing small tests for individual units of code — usually functions and classes. A unit test sets up a situation, calls the code, and checks that the result is what it should be.
 
-C++ has no unit testing framework in its standard library, but several excellent free ones exist. In this book we use **Catch2**. The exercises that need it fetch it automatically through CMake.
+C++ has no unit testing framework in its standard library, but several excellent free ones exist. In this book we use **Catch2**. The exercises that need it fetch it automatically through CMake. If you followed the preface and configured with `-DBUILD_TESTED_EXERCISES=OFF`, turn these exercises on now. CMake downloads Catch2 from GitHub during this step, so you need an internet connection:
+
+```
+cmake -S exercises -B build -DBUILD_TESTED_EXERCISES=ON
+cmake --build build
+```
 
 Suppose we have a class `Calculator`:
 

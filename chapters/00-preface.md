@@ -51,11 +51,13 @@ To check your setup, clone the repository and build all exercise templates:
 ```
 git clone https://github.com/Mufabo/cpp-intro-to-programming.git cpp-intro
 cd cpp-intro
-cmake -S exercises -B build
+cmake -S exercises -B build -DBUILD_TESTED_EXERCISES=OFF
 cmake --build build
 ```
 
-Every exercise becomes a program named after its folder, in a folder of its own. On Linux and macOS you run the first exercise with `./build/part01/01_01_Sandbox/01_01_Sandbox` (on Windows the file ends in `.exe`). Exercises that read data files from Chapter 4 onwards find their files in that same folder, so run those programs from inside it. The data files are copied when CMake *configures* the project, not on every build: if you change or add a data file, run `cmake -S exercises -B build` again. Editors with CMake support let you pick an exercise from a list and run it with a single click — this is the most comfortable way to work.
+`-DBUILD_TESTED_EXERCISES=OFF` leaves out the exercises that come with unit tests. Those need the Catch2 library, which CMake downloads from the internet. You will turn them on in Chapter 6.
+
+Every exercise becomes a program named after its folder, in a folder of its own. On Linux and macOS you run the first exercise with `./build/part01/01_01_Sandbox/01_01_Sandbox` (on Windows the file ends in `.exe`). Exercises that read data files from Chapter 4 onwards find their files in that same folder, so run those programs from inside it, for example `cd build/part04/<exercise>` and then `./<exercise>`. A program opens files relative to the folder it was started from, so started from anywhere else it would not find them. The data files are copied when CMake *configures* the project, not on every build: if you change or add a data file, run `cmake -S exercises -B build` again. Editors with CMake support let you pick an exercise from a list and run it with a single click — this is the most comfortable way to work.
 
 If you would rather not use CMake for the small exercises of the first chapters, you can compile a single file directly:
 

@@ -29,12 +29,25 @@ The book contains 262 exercises. Each exercise has a starter folder under [`exer
 You need a C++23 compiler with a recent standard library (GCC 15+, Clang 19+ with libc++, or Visual Studio 2022 17.10+) and CMake 3.25+.
 
 ```
-cmake -S exercises -B build
+cmake -S exercises -B build -DBUILD_TESTED_EXERCISES=OFF
 cmake --build build
 ./build/part01/01_01_Sandbox/01_01_Sandbox
 ```
 
-Every exercise becomes its own program in `build/partNN/<exercise>/`. Data files are copied next to the programs that need them.
+`-DBUILD_TESTED_EXERCISES=OFF` skips the exercises with unit tests, so the first build needs no network access. When you reach the testing part of chapter 6, turn them back on. CMake then downloads Catch2 from GitHub:
+
+```
+cmake -S exercises -B build -DBUILD_TESTED_EXERCISES=ON
+cmake --build build
+ctest --test-dir build
+```
+
+Every exercise becomes its own program in `build/partNN/<exercise>/`. Data files are copied into that folder too. Programs open them relative to the folder you start them from, so run exercises that read files from their own folder:
+
+```
+cd build/part14/14_07_Collage
+./14_07_Collage
+```
 
 The graphical exercises of chapters 13–14 (raylib, raygui, SQLite — downloaded automatically) are built only on request:
 
@@ -42,7 +55,7 @@ The graphical exercises of chapters 13–14 (raylib, raygui, SQLite — download
 cmake -S exercises -B build -DBUILD_GRAPHICAL_EXERCISES=ON
 ```
 
-On Linux this needs the X11/OpenGL development packages (`libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libgl1-mesa-dev` on Ubuntu). Exercises with unit tests use Catch2; run them with `ctest --test-dir build`.
+On Linux this needs the X11/OpenGL development packages (`libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libgl1-mesa-dev` on Ubuntu). Exercises with unit tests use Catch2 (see above); run them with `ctest --test-dir build`.
 
 `scripts/check-exercises.sh` and `scripts/check-graphical.sh` compile the templates quickly without CMake.
 

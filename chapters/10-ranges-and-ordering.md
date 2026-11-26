@@ -15,24 +15,37 @@ for (int number : numbers) {
         count++;
     }
 }
-double average = static_cast<double>(sum) / count;
+if (count == 0) {
+    std::println("no numbers divisible by three");
+} else {
+    double average = static_cast<double>(sum) / count;
+    std::println("average: {}", average);
+}
 ```
+
+The `if` matters: if the user types `end` straight away, or none of the numbers is divisible by three, `count` is 0, and dividing by zero would make `average` the special floating-point value NaN ("not a number").
 
 With ranges, it looks like this:
 
 ```cpp
-#include <ranges>
 #include <algorithm>
+#include <functional>
+#include <ranges>
 
 auto divisibleByThree = numbers
     | std::views::filter([](int number) { return number % 3 == 0; });
 
 int sum = std::ranges::fold_left(divisibleByThree, 0, std::plus{});
 auto count = std::ranges::distance(divisibleByThree);
-double average = static_cast<double>(sum) / count;
+if (count == 0) {
+    std::println("no numbers divisible by three");
+} else {
+    double average = static_cast<double>(sum) / count;
+    std::println("average: {}", average);
+}
 ```
 
-The second version reads almost like a description: take the numbers, keep those divisible by three, add them up, count them. Let's take the pieces apart.
+The second version reads almost like a description: take the numbers, keep those divisible by three, add them up, count them. The empty case still needs the same check. (`std::plus` comes from `<functional>`.) Let's take the pieces apart.
 
 ### Lambda expressions
 
@@ -131,7 +144,7 @@ Many algorithms in `<algorithm>` and `<numeric>` "reduce" a range to one value:
 
 *Template: `exercises/part10/10_01_AverageOfNumbers`*
 
-Read numbers until the user writes `end`, then print their average. Compute the average with range algorithms, not with a hand-written loop (reading the input still needs a loop).
+Read numbers until the user writes `end`, then print their average. Compute the average with range algorithms, not with a hand-written loop (reading the input still needs a loop). If the user gave no numbers, print `no numbers` instead of an average.
 
 ```
 Input numbers, type "end" to stop.
@@ -151,11 +164,17 @@ Input numbers, type "end" to stop.
 average of the numbers: 0.6666666666666666
 ```
 
+```
+Input numbers, type "end" to stop.
+> end
+no numbers
+```
+
 ### Exercise 10.2: Average of Selected Numbers
 
 *Template: `exercises/part10/10_02_AverageOfSelectedNumbers`*
 
-As before, but then ask whether to print the average of the negative or of the positive numbers. Use `std::views::filter`.
+As before, but then ask whether to print the average of the negative or of the positive numbers. Use `std::views::filter`. If there are no numbers of the chosen kind, print `no negative numbers` or `no positive numbers` instead of an average.
 
 ```
 Input numbers, type "end" to stop.
@@ -166,6 +185,16 @@ Input numbers, type "end" to stop.
 Print the average of the negative numbers or the positive numbers? (n/p)
 > p
 Average of the positive numbers: 1.5
+```
+
+```
+Input numbers, type "end" to stop.
+> 1
+> 2
+> end
+Print the average of the negative numbers or the positive numbers? (n/p)
+> n
+no negative numbers
 ```
 
 ### Exercise 10.3: Positive Numbers
